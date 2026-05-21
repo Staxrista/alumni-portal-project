@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}My Profile - MC Alumni Portal{% endblock %}
+{% block content %}
+<section class="page-width form-page">
+  <div class="form-intro">
+    <p class="eyebrow">My profile</p>
+    <h1>Edit your alumni profile</h1>
+    <p class="muted">Applied alumni remain private until admin approval. Registered alumni can choose whether their profile is public.</p>
+  </div>
+  {% if application %}
+    <div class="status-strip {{ application.status }}">Application status: <strong>{{ application.status|title }}</strong>{% if application.admin_notes %} - {{ application.admin_notes }}{% endif %}</div>
+  {% endif %}
+  <form method="post" class="panel form-grid">
+    <label>Full name
+      <input name="full_name" required value="{{ profile.full_name }}">
+    </label>
+    <label>Student ID
+      <input name="student_id" value="{{ profile.student_id or '' }}">
+    </label>
+    <label>School
+      <select name="school_id" required>
+        {% for school in schools %}
+          <option value="{{ school.id }}" {% if profile.school_id == school.id %}selected{% endif %}>{{ school.name }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Graduation year
+      <input name="graduation_year" type="number" min="1977" max="2035" required value="{{ profile.graduation_year }}">
+    </label>
+    <label>Course
+      <input name="course" required value="{{ profile.course }}">
+    </label>
+    <label>Current job title
+      <input name="job_title" value="{{ profile.job_title or '' }}">
+    </label>
+    <label>Company
+      <input name="company" value="{{ profile.company or '' }}">
+    </label>
+    <label>Location
+      <input name="location" value="{{ profile.location or '' }}">
+    </label>
+    <label class="span-2">LinkedIn URL
+      <input name="linkedin_url" value="{{ profile.linkedin_url or '' }}">
+    </label>
+    <label class="span-2">Profile bio
+      <textarea name="bio" rows="5" required>{{ profile.bio }}</textarea>
+    </label>
+    <label>Visibility
+      <select name="visibility" {% if current_user.role != 'registered_alumni' %}disabled{% endif %}>
+        <option value="private" {% if profile.visibility == 'private' %}selected{% endif %}>Private</option>
+        <option value="public" {% if profile.visibility == 'public' %}selected{% endif %}>Public directory</option>
+      </select>
+    </label>
+    <div class="span-2 form-actions">
+      <button class="primary-btn" type="submit">Save profile</button>
+      <a class="ghost-btn" href="{{ url_for('portal.status') }}">View status</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

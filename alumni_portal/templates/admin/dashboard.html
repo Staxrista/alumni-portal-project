@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Admin - MC Alumni Portal{% endblock %}
+{% block content %}
+<section class="page-width admin-page">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Administrative dashboard</p>
+      <h1>Alumni office controls</h1>
+      <p class="muted">Approve applicants, reject invalid submissions, and maintain school groups.</p>
+    </div>
+  </div>
+  <div class="admin-stats">
+    <article><strong>{{ stats.registered }}</strong><span>Registered Alumni</span></article>
+    <article><strong>{{ stats.pending }}</strong><span>Pending Applications</span></article>
+    <article><strong>{{ stats.schools }}</strong><span>Schools</span></article>
+  </div>
+
+  <section class="panel">
+    <h2>Pending applications</h2>
+    <div class="application-list">
+      {% for item in pending %}
+        <article class="application-card">
+          <div>
+            <span class="school-badge">{{ item.school_name }}</span>
+            <h3>{{ item.full_name }}</h3>
+            <p class="muted">{{ item.email }} - {{ item.course }} - Class of {{ item.graduation_year }}</p>
+            <p>{{ item.bio }}</p>
+          </div>
+          <form method="post" action="{{ url_for('admin.approve', application_id=item.id) }}" class="review-form">
+            <input name="admin_notes" placeholder="Approval notes" value="Verified by alumni office.">
+            <button class="primary-btn" type="submit">Approve</button>
+          </form>
+          <form method="post" action="{{ url_for('admin.reject', application_id=item.id) }}" class="review-form">
+            <input name="admin_notes" placeholder="Reason for rejection" value="Please provide clearer alumni evidence.">
+            <button class="danger-btn" type="submit">Reject</button>
+          </form>
+        </article>
+      {% else %}
+        <p class="empty">There are no pending applications.</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="panel two-column-panel">
+    <div>
+      <h2>Schools</h2>
+      <div class="school-list">
+        {% for school in schools %}
+          <article>
+            <strong>{{ school.name }}</strong>
+            <span>{{ school.description }}</span>
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+    <form method="post" action="{{ url_for('admin.add_school') }}" class="form-stack">
+      <h2>Add school</h2>
+      <label>School name
+        <input name="name" required placeholder="School of Engineering">
+      </label>
+      <label>Description
+        <textarea name="description" rows="4" required placeholder="Short description"></textarea>
+      </label>
+      <button class="primary-btn" type="submit">Add school</button>
+    </form>
+  </section>
+
+  <section class="panel">
+    <h2>All application records</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Name</th><th>Email</th><th>School</th><th>Status</th><th>Notes</th></tr></thead>
+        <tbody>
+          {% for item in reviewed %}
+            <tr>
+              <td>{{ item.full_name }}</td>
+              <td>{{ item.email }}</td>
+              <td>{{ item.school_name }}</td>
+              <td>{{ item.status }}</td>
+              <td>{{ item.admin_notes or '-' }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</section>
+{% endblock %}

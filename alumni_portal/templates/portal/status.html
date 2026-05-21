@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Status - MC Alumni Portal{% endblock %}
+{% block content %}
+<section class="page-width status-page">
+  <div class="panel status-panel">
+    <p class="eyebrow">Application status</p>
+    <h1>{{ profile.full_name }}</h1>
+    {% if application %}
+      <div class="status-badge {{ application.status }}">{{ application.status|title }}</div>
+      <p>Your profile is currently linked to <strong>{{ profile.school_name }}</strong>.</p>
+      {% if application.status == 'pending' %}
+        <p class="muted">The alumni office has not reviewed this application yet. You can still edit your submitted profile.</p>
+      {% elif application.status == 'approved' %}
+        <p class="muted">You are now a Registered Alumni user. You may make your profile public in the directory.</p>
+      {% else %}
+        <p class="muted">The application was rejected. Review the admin notes, update your profile, and contact the alumni office.</p>
+      {% endif %}
+      {% if application.admin_notes %}<p><strong>Admin notes:</strong> {{ application.admin_notes }}</p>{% endif %}
+    {% else %}
+      <p>No application record was found.</p>
+    {% endif %}
+    <a class="primary-btn" href="{{ url_for('portal.profile') }}">Edit profile</a>
+  </div>
+</section>
+{% endblock %}

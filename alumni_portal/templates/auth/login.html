@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Login - MC Alumni Portal{% endblock %}
+{% block content %}
+<section class="auth-shell page-width">
+  <div class="auth-card">
+    <p class="eyebrow">Secure access</p>
+    <h1>Sign in to the alumni portal</h1>
+    <p class="muted">Use one of the demo accounts or your submitted alumni application account.</p>
+    <form method="post" class="form-stack">
+      <label>Email
+        <input name="email" type="email" autocomplete="email" required placeholder="alumni@mc-alumni.test">
+      </label>
+      <label>Password
+        <input name="password" type="password" autocomplete="current-password" required placeholder="AlumniPass123!">
+      </label>
+      <button class="primary-btn full" type="submit">Sign in</button>
+    </form>
+    <div class="demo-box">
+      <strong>Demo users</strong>
+      <span>Admin: admin@mc-alumni.test / AdminPass123!</span>
+      <span>Registered: alumni@mc-alumni.test / AlumniPass123!</span>
+      <span>Applied: pending@mc-alumni.test / PendingPass123!</span>
+    </div>
+  </div>
+</section>
+{% endblock %}

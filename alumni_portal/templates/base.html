@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}MC Alumni Portal{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='alumni.css') }}">
+    <script defer src="{{ url_for('static', filename='alumni.js') }}"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="{{ url_for('portal.home') }}" aria-label="Mediterranean College Alumni Portal">
+        <span class="brand-mark">MC</span>
+        <span>Alumni Portal</span>
+      </a>
+      <button class="nav-toggle" type="button" data-nav-toggle>Menu</button>
+      <nav class="main-nav" data-nav-menu aria-label="Primary navigation">
+        <a href="{{ url_for('portal.home') }}">Home</a>
+        <a href="{{ url_for('portal.directory') }}">Directory</a>
+        <a href="{{ url_for('portal.apply') }}">Apply</a>
+        {% if current_user and current_user['role'] != 'admin' %}
+          <a href="{{ url_for('portal.profile') }}">My Profile</a>
+          <a href="{{ url_for('portal.status') }}">Status</a>
+        {% endif %}
+        {% if current_user and current_user['role'] == 'admin' %}
+          <a href="{{ url_for('admin.dashboard') }}">Admin</a>
+        {% endif %}
+      </nav>
+      <div class="account-nav">
+        {% if current_user %}
+          <span class="role-pill">{{ role_labels.get(current_user['role'], current_user['role']) }}</span>
+          <a class="ghost-btn" href="{{ url_for('auth.logout') }}">Logout</a>
+        {% else %}
+          <a class="ghost-btn" href="{{ url_for('auth.login') }}">Login</a>
+          <a class="primary-btn" href="{{ url_for('portal.apply') }}">Join Alumni</a>
+        {% endif %}
+      </div>
+    </header>
+
+    <main>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-stack" role="status" aria-live="polite">
+            {% for category, message in messages %}
+              <p class="flash {{ category }}">{{ message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+      <strong>Mediterranean College Alumni Office</strong>
+      <span>Coursework prototype with role-based access and SQLite relational storage.</span>
+    </footer>
+  </body>
+</html>

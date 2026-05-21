@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Directory - MC Alumni Portal{% endblock %}
+{% block content %}
+<section class="page-width directory-page">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Alumni directory</p>
+      <h1>Approved registered alumni profiles</h1>
+      <p class="muted">Only public profiles approved by the alumni office are listed here.</p>
+    </div>
+  </div>
+  <form class="filter-panel" method="get">
+    <label>Search
+      <input name="q" value="{{ query }}" placeholder="Name, course, company or role" data-directory-search>
+    </label>
+    <label>School
+      <select name="school_id">
+        <option value="">All schools</option>
+        {% for school in schools %}
+          <option value="{{ school.id }}" {% if selected_school == school.id %}selected{% endif %}>{{ school.name }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <button class="primary-btn" type="submit">Apply filters</button>
+  </form>
+  <div class="profile-grid" data-directory-grid>
+    {% for profile in profiles %}
+      {% include "portal/profile_card.html" %}
+    {% else %}
+      <p class="empty">No approved profiles match your filters.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

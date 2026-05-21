@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Apply - MC Alumni Portal{% endblock %}
+{% block content %}
+<section class="page-width form-page">
+  <div class="form-intro">
+    <p class="eyebrow">Alumni application</p>
+    <h1>Submit your alumni profile for approval</h1>
+    <p class="muted">Your account starts as Applied Alumni. The alumni office can approve it and convert it to Registered Alumni.</p>
+  </div>
+  <form method="post" class="panel form-grid">
+    <label>Email
+      <input name="email" type="email" required value="{{ form.email or '' }}" placeholder="you@example.com">
+    </label>
+    <label>Password
+      <input name="password" type="password" required placeholder="At least 8 characters">
+    </label>
+    <label>Full name
+      <input name="full_name" required value="{{ form.full_name or '' }}" placeholder="Full legal name">
+    </label>
+    <label>Student ID
+      <input name="student_id" value="{{ form.student_id or '' }}" placeholder="MC student ID">
+    </label>
+    <label>School
+      <select name="school_id" required>
+        <option value="">Choose school</option>
+        {% for school in schools %}
+          <option value="{{ school.id }}" {% if form.school_id == school.id|string %}selected{% endif %}>{{ school.name }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Graduation year
+      <input name="graduation_year" type="number" min="1977" max="2035" required value="{{ form.graduation_year or '' }}" placeholder="2025">
+    </label>
+    <label>Course
+      <input name="course" required value="{{ form.course or '' }}" placeholder="BSc Computer Science">
+    </label>
+    <label>Current job title
+      <input name="job_title" value="{{ form.job_title or '' }}" placeholder="Software Developer">
+    </label>
+    <label>Company
+      <input name="company" value="{{ form.company or '' }}" placeholder="Company name">
+    </label>
+    <label>Location
+      <input name="location" value="{{ form.location or '' }}" placeholder="Athens, Greece">
+    </label>
+    <label class="span-2">LinkedIn URL
+      <input name="linkedin_url" value="{{ form.linkedin_url or '' }}" placeholder="https://linkedin.com/in/your-profile">
+    </label>
+    <label class="span-2">Profile bio
+      <textarea name="bio" rows="5" required placeholder="Summarise your studies, career path, and alumni interests.">{{ form.bio or '' }}</textarea>
+    </label>
+    <div class="span-2 form-actions">
+      <button class="primary-btn" type="submit">Submit application</button>
+      <a class="ghost-btn" href="{{ url_for('portal.home') }}">Cancel</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

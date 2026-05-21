@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.vite/
+.vscode/
+.DS_Store
+*.log
+.venv/
+__pycache__/
+.pytest_cache/
+instance/
+*.sqlite
+StudentID_GroupID_5CM519_CW2/
+StudentID_GroupID_5CM519_CW2.zip
